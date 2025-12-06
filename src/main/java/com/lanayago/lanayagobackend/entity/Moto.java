@@ -1,4 +1,4 @@
 package com.lanayago.lanayagobackend.entity;
 
-public class conduteur extends user{
+public class Moto extends Engin{
 }

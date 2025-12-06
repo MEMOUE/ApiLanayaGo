@@ -1,4 +1,7 @@
 package com.lanayago.lanayagobackend.entity;
 
-public class voiture {
+public enum TypeEngin {
+
+    MOTO,
+    VOITURE,
 }
