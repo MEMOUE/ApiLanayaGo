@@ -7,6 +7,11 @@ spring:
     username: root
     password: 123456789
     driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 20000
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -14,3 +19,97 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+        use_sql_comments: true
+
+  # Configuration JWT
+  security:
+    jwt:
+      secret-key: ${JWT_SECRET:lanayago-secret-key-super-secure-2024-change-this-in-production-min-256-bits}
+      expiration: 86400000 # 24 heures en millisecondes
+      refresh-expiration: 604800000 # 7 jours en millisecondes
+
+  # Upload de fichiers
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+      file-size-threshold: 2MB
+
+# Configuration du serveur
+server:
+  port: 8080
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: on_param
+    include-exception: false
+
+# Configuration CORS
+cors:
+  allowed-origins: http://localhost:4200,http://localhost:3000,http://localhost:8081
+  allowed-methods: GET,POST,PUT,DELETE,OPTIONS,PATCH
+  allowed-headers: "*"
+  allow-credentials: true
+  max-age: 3600
+
+# Configuration OpenAPI / Swagger
+springdoc:
+  api-docs:
+    path: /api-docs
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+    operationsSorter: method
+    tagsSorter: alpha
+    displayRequestDuration: true
+    filter: true
+    showExtensions: true
+    showCommonExtensions: true
+    defaultModelsExpandDepth: 1
+    defaultModelExpandDepth: 1
+    tryItOutEnabled: true
+  show-actuator: true
+  paths-to-match: /api/**
+  packages-to-scan: com.lanayago.lanayagobackend.controller
+
+# Actuator (monitoring)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,openapi,swagger-ui
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: when-authorized
+
+# Logging
+logging:
+  level:
+    root: INFO
+    com.lanayago: DEBUG
+    org.springframework.web: INFO
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.springdoc: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/lanayago-backend.log
+    max-size: 10MB
+    max-history: 30
+
+# Configuration application
+application:
+  name: Lanayago Backend API
+  version: 1.0.0
+  description: API REST pour la gestion de transport et livraison
+  contact:
+    name: Support Lanayago
+    email: support@lanayago.ci
+    url: https://www.lanayago.ci
