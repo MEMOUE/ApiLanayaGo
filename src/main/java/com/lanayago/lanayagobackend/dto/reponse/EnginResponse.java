@@ -1,10 +1,9 @@
-package com.lanayago.lanayagobackend.dto.request;
+package com.lanayago.lanayagobackend.dto.reponse;
 
+import com.lanayago.lanayagobackend.entity.enums.StatutEngin;
 import com.lanayago.lanayagobackend.entity.enums.TypeEngin;
 import com.lanayago.lanayagobackend.entity.enums.TypeMoto;
 import com.lanayago.lanayagobackend.entity.enums.TypeVehicule;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,26 +11,20 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EnginRequest {
-
-    @NotNull(message = "Le type d'engin est obligatoire")
+public class EnginResponse {
+    private Long id;
     private TypeEngin typeEngin;
-
-    @NotBlank(message = "La marque est obligatoire")
     private String marque;
-
-    @NotBlank(message = "Le modèle est obligatoire")
     private String modele;
-
-    @NotBlank(message = "La couleur est obligatoire")
     private String couleur;
-
-    @NotBlank(message = "Le matricule est obligatoire")
     private String matricule;
-
     private Integer annee;
-
     private String photoEngin;
+    private StatutEngin statut;
+    private boolean active;
+
+    // Informations propriétaire
+    private ProprietaireDTO proprietaire;
 
     // Spécifique aux motos
     private Integer cylindree;
@@ -41,4 +34,14 @@ public class EnginRequest {
     private TypeVehicule typeVehicule;
     private Integer nombrePlaces;
     private Double capaciteChargement;
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ProprietaireDTO {
+        private Long id;
+        private String nom;
+        private String prenom;
+        private String telephone;
+    }
 }
