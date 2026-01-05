@@ -18,6 +18,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import static org.springframework.security.core.userdetails.User.builder;
+
 
 @Service
 @RequiredArgsConstructor
@@ -75,21 +77,20 @@ public class AuthService {
 
             user = userRepository.save(proprietaire);
         } else {
-            // Client simple (LIVREUR ou par défaut)
+            // Client simple
             user = new User();
             user.setNom(request.getNom());
             user.setPrenom(request.getPrenom());
             user.setEmail(request.getEmail());
             user.setPassword(passwordEncoder.encode(request.getPassword()));
             user.setTelephone(request.getTelephone());
-            user.setRole(request.getRole() != null ? request.getRole() : Roles.LIVREUR);
+            user.setRole(request.getRole() != null ? request.getRole() : Roles.CLIENT);
 
             user = userRepository.save(user);
         }
 
         // Générer le token JWT
-        var userDetails = org.springframework.security.core.userdetails.User
-                .builder()
+        var userDetails = builder()
                 .username(user.getEmail())
                 .password(user.getPassword())
                 .authorities("ROLE_" + user.getRole().name())
@@ -124,8 +125,7 @@ public class AuthService {
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
 
         // Générer le token
-        var userDetails = org.springframework.security.core.userdetails.User
-                .builder()
+        var userDetails = builder()
                 .username(user.getEmail())
                 .password(user.getPassword())
                 .authorities("ROLE_" + user.getRole().name())
