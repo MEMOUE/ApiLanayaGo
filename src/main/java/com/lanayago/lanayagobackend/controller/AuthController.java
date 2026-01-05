@@ -30,7 +30,8 @@ public class AuthController {
             summary = "Inscription d'un nouvel utilisateur",
             description = """
                     Permet de créer un nouveau compte utilisateur. Supporte plusieurs types d'utilisateurs:
-                    - LIVREUR (client standard)
+                    - CLIENT (client standard)
+                    - LIVREUR 
                     - CONDUCTEUR (nécessite un numéro de permis)
                     - PROPRIETAIRE (propriétaire de véhicules)
                     """,
